@@ -15,6 +15,7 @@ from typing import List, Dict
 import pandas as pd
 import time
 
+# === Config ===
 model = 'anthropic/claude-opus-4-0'
 dataset_name = './dev_subset_1.csv'
 relation_order = False  # True = relation-directed order, False = natural order
@@ -46,12 +47,11 @@ dev_data = pd.read_csv(dataset_name)
 if relation_order:
     arg_1_key = "ordered_arg1"
     arg_2_key = "ordered_arg2"
-    pred_key = 'zeroshot_relationOrder'
+    pred_key = 'zero-shot_relation-order'
 else:
     arg_1_key = "unordered_arg1"
     arg_2_key = "unordered_arg2"
-    pred_key = 'zeroshot_naturalOrder'
-
+    pred_key = 'zero-shot_natural-order'
 
 if pred_key not in dev_data.columns:
     dev_data[pred_key] = None
@@ -77,8 +77,8 @@ system_prompt = f"""
         Return **only one label** from the list above.
         """
 
-
-def generate_respose(msgs: List[Dict]) -> str:
+# === Helper functions ===
+def generate_response(msgs: List[Dict]) -> str:
     """
     Calls Claude Opus 4.0 to classify a discourse relation given two arguments.
     Returns the predicted label as a plain string.
@@ -92,11 +92,12 @@ def generate_respose(msgs: List[Dict]) -> str:
     )
     return response.choices[0].message.content
 
+# === Main process ===
 print(f"Processing dataset: {dataset_name}")
 for index, row in dev_data.iterrows():
 
     if index % 5 == 0 and index > 0:
-        dev_data.to_csv(f'{dataset_name}', index=False)
+        dev_data.to_csv(f"{dataset_name}", index=False)
 
     if dev_data[pred_key].notna().all():
         print("✅ All rows parsed. Exiting loop.")
@@ -113,7 +114,7 @@ for index, row in dev_data.iterrows():
     retries = 2
     while retries > 0:
         try:
-            response = generate_respose(msgs)
+            response = generate_response(msgs)
             dev_data.loc[index, pred_key] = response
             print()
             print(f"Correct label: {row['label_text']}")
@@ -125,6 +126,6 @@ for index, row in dev_data.iterrows():
             print(f"⚠️ API error on row {index}: {e}")
             retries -= 1
             print(f"\n******issue at row {index}\n___arg1: {row[arg_1_key]}\n___arg2: {row[arg_2_key]}\n")
-            time.sleep(5)
+            time.sleep(wait_time)
 
-dev_data.to_csv(f'{dataset_name}', index=False)
+dev_data.to_csv(f"{dataset_name}", index=False)

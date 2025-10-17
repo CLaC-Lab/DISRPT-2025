@@ -27,3 +27,13 @@ scripts/                  # Data extraction and preprocessing scripts (extract_d
 
 - [Nawar Turk](https://www.linkedin.com/in/nawart/)  
 - [Daniele Comitogianni](https://www.linkedin.com/in/daniele-comitogianni/)
+
+- ---
+
+## Poster
+
+<img src="CLaC%20at%20DISRPT%202025%20Poster.jpg" alt="CLaC at DISRPT 2025 Poster" width="600"/>
+
+[🔗 View full-resolution poster](CLaC%20at%20DISRPT%202025%20Poster.jpg)
+
+---

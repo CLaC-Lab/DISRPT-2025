@@ -17,7 +17,6 @@ models/
 │   └── Contains Google Colab notebooks with training logs and results.
 ├── prompt-llm/           # Prompt-based experiments with Claude (zero-/few-shot)
 ├── hidac/                # Hierarchical adapter + contrastive learning model (external repo linked)
-results/                  # Coming soon: evaluation outputs and summary tables
 scripts/                  # Data extraction and preprocessing scripts (extract_data.py)
 ```
 
